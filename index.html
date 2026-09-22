@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MovieVault | Find Your Next Movie</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header and main navigation -->
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="logo" href="index.html">Movie<span>Vault</span></a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="movie.html">Movies</a>
+        <a href="forum.html">Forum</a>
+        <a href="submit-review.html">Submit Review</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+
+      <!-- Movie search -->
+      <form class="header-search" action="#">
+        <label class="visually-hidden" for="header-search">Search movies</label>
+        <input id="header-search" type="search" placeholder="Search movies">
+        <button type="submit">Go</button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero section -->
+    <section class="hero">
+      <div class="container hero-content">
+        <p class="eyebrow">Your next great watch</p>
+        <h1>Find Your Next Movie</h1>
+        <p>
+          Search and explore movies by genre, ratings, directors, and availability.
+          MovieVault is your organized space for discovering what to watch next.
+        </p>
+
+        <form class="hero-actions hero-search" action="#">
+          <label class="visually-hidden" for="hero-search">Search for a movie</label>
+          <input id="hero-search" type="search" placeholder="Search by title, director, or genre">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Browse by genre -->
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Start exploring</p>
+            <h2>Browse by Genre</h2>
+          </div>
+        </div>
+
+        <div class="genre-list">
+          <a href="#">Action</a>
+          <a href="#">Comedy</a>
+          <a href="#">Drama</a>
+          <a href="#">Horror</a>
+          <a href="#">Sci-Fi</a>
+          <a href="#">Thriller</a>
+          <a href="#">Animation</a>
+          <a href="#">More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popular and recent movies -->
+    <section class="section" aria-labelledby="popular-heading">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Curated picks</p>
+            <h2 id="popular-heading">Popular / Recent Movies</h2>
+          </div>
+          <a class="button button-secondary button-small" href="movie.html">View all movies</a>
+        </div>
+
+        <div class="movie-grid">
+          <article class="movie-card">
+            <div class="poster poster-interstellar">INTERSTELLAR</div>
+            <div class="movie-info">
+              <h3>Interstellar</h3>
+              <p>Sci-Fi / Drama</p>
+              <div class="card-meta">
+                <span>2014</span>
+                <span class="rating">★ 8.7 / 10</span>
+              </div>
+              <a class="button button-secondary button-small" href="movie.html">View Details</a>
+            </div>
+          </article>
+
+          <article class="movie-card">
+            <div class="poster poster-copper">The Copper Sky</div>
+            <div class="movie-info">
+              <h3>The Copper Sky</h3>
+              <p>Drama / Mystery</p>
+              <div class="card-meta">
+                <span>2023</span>
+                <span class="rating">★ 8.4 / 10</span>
+              </div>
+              <a class="button button-secondary button-small" href="movie.html">View Details</a>
+            </div>
+          </article>
+
+          <article class="movie-card">
+            <div class="poster poster-moon">AFTER THE MOON</div>
+            <div class="movie-info">
+              <h3>After the Moon</h3>
+              <p>Adventure / Drama</p>
+              <div class="card-meta">
+                <span>2022</span>
+                <span class="rating">★ 8.2 / 10</span>
+              </div>
+              <a class="button button-secondary button-small" href="movie.html">View Details</a>
+            </div>
+          </article>
+
+          <article class="movie-card">
+            <div class="poster poster-neon">NEON CITY</div>
+            <div class="movie-info">
+              <h3>Neon City</h3>
+              <p>Thriller / Crime</p>
+              <div class="card-meta">
+                <span>2024</span>
+                <span class="rating">★ 8.1 / 10</span>
+              </div>
+              <a class="button button-secondary button-small" href="movie.html">View Details</a>
+            </div>
+          </article>
+
+          <article class="movie-card">
+            <div class="poster poster-forest">THE LAST FOREST</div>
+            <div class="movie-info">
+              <h3>The Last Forest</h3>
+              <p>Fantasy / Drama</p>
+              <div class="card-meta">
+                <span>2021</span>
+                <span class="rating">★ 7.9 / 10</span>
+              </div>
+              <a class="button button-secondary button-small" href="movie.html">View Details</a>
+            </div>
+          </article>
+
+          <article class="movie-card">
+            <div class="poster poster-card">PAPER WORLDS</div>
+            <div class="movie-info">
+              <h3>Paper Worlds</h3>
+              <p>Animation / Comedy</p>
+              <div class="card-meta">
+                <span>2024</span>
+                <span class="rating">★ 7.8 / 10</span>
+              </div>
+              <a class="button button-secondary button-small" href="movie.html">View Details</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Highest-rated movies report -->
+    <section class="section">
+      <div class="container split-section">
+        <div>
+          <p class="eyebrow">A future database report</p>
+          <h2>Highest Rated Movies</h2>
+          <p class="muted">
+            Placeholder rankings for the future average user rating query across movies and reviews.
+          </p>
+        </div>
+
+        <ol class="ranked-list">
+          <li>
+            <span class="rank">01</span>
+            <strong>Interstellar</strong>
+            <span>9.2</span>
+          </li>
+          <li>
+            <span class="rank">02</span>
+            <strong>The Copper Sky</strong>
+            <span>8.9</span>
+          </li>
+          <li>
+            <span class="rank">03</span>
+            <strong>After the Moon</strong>
+            <span>8.7</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Empty and error states -->
+    <section class="section">
+      <div class="container state-grid">
+        <article class="state-card">
+          <p class="eyebrow">Search state</p>
+          <h2>No movies found.</h2>
+          <p>I couldn't find a movie matching your search. Try another title or browse by genre.</p>
+          <a class="button button-secondary" href="#">Browse All Movies</a>
+        </article>
+
+        <article class="state-card danger">
+          <p class="eyebrow">Error state</p>
+          <h2>Something went wrong.</h2>
+          <p>Movie information could not be loaded. Please try again.</p>
+          <a class="button button-secondary" href="#">Try Again</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <p><strong>MovieVault</strong> · CS256 database project prototype</p>
+      <p>Static HTML/CSS mockup · Data shown is placeholder content</p>
+    </div>
+  </footer>
+</body>
+</html>

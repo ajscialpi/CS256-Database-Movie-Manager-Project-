@@ -1,28 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My project</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='brand.css') }}">
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='brand.css') }}">
+</head>
+<body>
+    <!-- Header -->
     <header>
-      <p>YOUR PROJECT BRAND</p>
+        <p>YOUR PROJECT BRAND</p>
     </header>
+
     <main>
-      <h1>My project's records</h1>
-      <p>The rows below currently come from Python. Connect your lecture database in lesson 5.</p>
-      <section class="cards" aria-label="Records">
-        {% for row in rows %}
-        <article class="card">
-          <h2>{{ row.title }}</h2>
-          <p>{{ row.category }}</p>
-        </article>
-        {% else %}
-        <p>No matching records yet.</p>
-        {% endfor %}
-      </section>
+        <h1>My project's records</h1>
+        <p>The rows below currently come from Python. Connect your lecture database in lesson 5.</p>
+
+        <!-- Records from the Flask view -->
+        <section class="cards" aria-label="Records">
+            {% for row in rows %}
+            <article class="card">
+                <h2>{{ row.title }}</h2>
+                <p>{{ row.category }}</p>
+            </article>
+            {% else %}
+            <p>No matching records yet.</p>
+            {% endfor %}
+        </section>
     </main>
-  </body>
+</body>
 </html>

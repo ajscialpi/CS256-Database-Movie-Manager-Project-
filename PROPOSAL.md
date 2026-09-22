@@ -59,7 +59,7 @@ One feature I will **save for later** is theater and showtime functionality. Eve
 
 ### Movie Database – Home / Browse Page
 
-```text
+```text\
 +------------------------------------------------------------------+
 |  MOVIE DATABASE NAME              Home | Movies | Genres | Search|
 +------------------------------------------------------------------+
