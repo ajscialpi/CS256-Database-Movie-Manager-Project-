@@ -1,7 +1,12 @@
 """Start in lesson 4. Replace display_rows with your own database query in lesson 5."""
 import os
 from flask import Flask, render_template
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder='../templates',
+    static_folder='../templates',
+    static_url_path='/templates',
+)
 app.config['SECRET_KEY'] = os.getenv('PROJECT_SECRET_KEY', 'local-practice-only')
 
 @app.get('/')

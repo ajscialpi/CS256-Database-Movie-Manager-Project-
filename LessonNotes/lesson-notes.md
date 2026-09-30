@@ -1,7 +1,7 @@
 ## Build the page structure with HTML
 9/16/26
 
-The <!doctype html> line tells the browser to use modern HTML. The html element has lang="en" to identify the document language. Inside head, title supplies the browser-tab text and the stylesheet link loads static/brand.css. The viewport setting helps the page use the available screen width on a phone.
+The <!doctype html> line tells the browser to use modern HTML. The html element has lang="en" to identify the document language. Inside head, title supplies the browser-tab text and the stylesheet link loads ../templates/brand.css. The viewport setting helps the page use the available screen width on a phone.
 
 A link takes the user somewhere. A button performs an action, such as submitting a form. Give either one words that explain the result: “View report” is more useful than “Click here.” A div is a general container for grouping content. It does not describe a user action or a document section by itself.
 

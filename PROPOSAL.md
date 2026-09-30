@@ -5,7 +5,7 @@
 - Intended user and one useful task: Movie enthusiests, to help advertise movies
 
 - Three screens and the path between them: Home Page, Forum Page, Submission Page, Blog Page
-![Home Page Draft](image-1.png)
+![Home Page Draft](MileStones/MileStoneImages/IndexMockUp.png)
 
 - Colors, typography, and why they support the user: red, black, and white. These colors create a movie-style design and make the website easy to read.
 
@@ -27,7 +27,7 @@ Attach a wireframe with labels, empty results, errors, success, and delete confi
 
 Milestone: M01 / Date:
 
-1. What works (file or screenshot): ![One Facility, Many Reports](image.png)
+1. What works (file or screenshot): ![One Facility, Many Reports](MileStones/MileStoneImages/OneFacility.png)
 2. One result I can explain: The 2 page sketches for website UI. (First page is forum page, second page is Home page)
 3. What is blocked: No Blockers at the moment
 4. My next action: Create a Skeleton.md and plan more of the workflow

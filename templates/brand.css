@@ -1,8 +1,7 @@
 :root {
-  --ink: #18333d;
-  --paper: #faf8f0;
-  --brand: #ad0f0f;
-  --accent: #680303;
+  --ink: #1a1a1a;
+  --paper: #f7f7f7;
+  --brand: #b31217;
 }
 
 * {
@@ -27,6 +26,10 @@ h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
 }
 
+h1, h2 {
+  color: var(--brand);
+}
+
 a {
   color: var(--brand);
 }
@@ -38,10 +41,10 @@ a {
 }
 
 .card {
-  border: 1px solid #a7bbc0;
+  border: 1px solid var(--brand);
   border-radius: .6rem;
-  padding: 1.2rem;
-  background: white;
+  padding: 1.5rem;
+  background: var(--paper);
 }
 
 :focus-visible {
