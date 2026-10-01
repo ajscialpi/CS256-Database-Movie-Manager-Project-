@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = os.getenv('PROJECT_SECRET_KEY', 'local-practice-only'
 @app.get('/')
 def home():
     # A temporary mock dataset: this is not a database connection.
-    display_rows = [{'title': 'Your first project record', 'category': 'Planning'}]
+    display_rows = [{'title': 'Movie Vault', 'category': 'Planning'}]
     return render_template('index.html', rows=display_rows)
 
 if __name__ == '__main__':
