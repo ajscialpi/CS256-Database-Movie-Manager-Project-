@@ -3,20 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My project</title>
+    <title>MovieVault</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='brand.css') }}">
 </head>
 <body>
-    <!-- Header -->
     <header>
         <p>Movie Vault</p>
     </header>
 
     <main>
         <h1>Movie Vault</h1>
-        <p>The rows below currently come from Python. Connect your lecture database in lesson 5.</p>
+        <h2>PostgreSQL Practice Records</h2>
+        <p>These movie records are retrieved from my PostgreSQL database using Flask and Python.</p>
 
-        <!-- Records from the Flask view -->
         <section class="cards" aria-label="Records">
             {% for row in rows %}
             <article class="card">

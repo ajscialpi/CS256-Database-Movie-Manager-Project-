@@ -34,38 +34,129 @@ python3 -m venv .venv
 
 Open http://127.0.0.1:5001. Stop with Ctrl+C. You do not need to activate the
 virtual environment, change PowerShell execution policy, or deploy publicly.
-The Python list in backendconnection/app.py is temporary mock content, not a database.
+These instructions describe the original Lesson 4 local setup. For Milestone 5, the temporary Python list has been replaced with a parameterized PostgreSQL query. The current server startup instructions are documented below.
 
-## Lesson 5 onward: your lecture database
 
-`backendconnection/repository_postgres_example.py` shows a parameterized join. The names `item`
-and `category` are illustrative; adapt them to tables you designed with Professor Haczewski.
-Set DATABASE_DSN locally using the connection details your instructor provides;
-never commit it or show a password in a screenshot. For example, after replacing
-the placeholders (keep these commands off your submitted screenshots):
+## Lesson 5: MovieVault PostgreSQL Integration
 
-```powershell
-$env:DATABASE_DSN = 'host=YOUR_HOST dbname=YOUR_DATABASE user=YOUR_USER'
+### Project Overview
+
+MovieVault is a Flask web application that reads movie records from PostgreSQL and displays them using a Jinja HTML template.
+
+The project currently uses two related database tables:
+
+- `cs256_m05_movievault.movies` — stores movie records.
+- `cs256_m05_movievault.reviews` — stores reviews associated with movies.
+
+The `movies.movie_id` primary key connects to the `reviews.movie_id` foreign key, creating a one-to-many relationship.
+
+The Milestone 5 Flask page currently queries the movies table. It uses a parameterized title filter and displays the returned title and genre.
+
+### Project File Locations
+
+GitHub repository structure:
+
+- `backendconnection/app.py` — Flask application and PostgreSQL query.
+- `templates/index.html` — Jinja template displaying movie records.
+- `templates/brand.css` — Website styling.
+
+King's College server structure:
+
+- Server: `cs256.kings.edu`
+- Username: `antonioscialpi`
+- Project folder: `/home/antonioscialpi/cs256-project`
+- Server Flask application: `~/cs256-project/app.py`
+- Server template: `~/cs256-project/templates/index.html`
+- Python environment: `~/cs256-project/.venv-kings`
+
+The GitHub and server folder structures are slightly different. The GitHub application uses `../templates`, while the server application uses `templates`.
+
+### PostgreSQL Configuration
+
+- Database: `antonioscialpi`
+- Database role: `antonioscialpi`
+- Schema: `cs256_m05_movievault`
+- Connection: PostgreSQL Unix socket on the King's server
+- Socket directory: `/var/run/postgresql`
+- Environment variable: `DATABASE_DSN`
+
+The Python application accesses its connection configuration through `os.environ['DATABASE_DSN']`.
+
+The database connection uses the following non-secret setting on the King's server:
+
+```bash
+export DATABASE_DSN="dbname=$(whoami)"
 ```
 
-Use your approved password/secret method; a DSN may omit a password and use
-PostgreSQL's protected password file. Import and call your query from backendconnection/app.py,
-then adapt the template to its actual column names. Continue through validation,
-create, search, update/delete, and a joined report. Do not load S Corp's full data
-into your personal database as an automatic replacement for your own project.
+No passwords, private keys, or secret configuration values are stored in this repository.
 
-## Practice copy versus individual project
+### Connect to King's Server
 
-The separate `SCORP_LOCAL_EXAMPLE.zip` is the worked example. Run it on port 5000
-using its LOCAL_SETUP guide. Its small CSV adapter lets you inspect web behavior;
-it is not the final PostgreSQL requirement. Mutation experiments belong in your
-local practice copy, using disposable synthetic reports.
+From Windows PowerShell:
 
-`backendconnection/api_example.js` is an optional DevTools example for that local S Corp copy.
-Use the functions only after reading the JSON/API lesson.
+```powershell
+ssh antonioscialpi@cs256.kings.edu
+```
 
-## Submit
+### Start the Flask Application
 
-Follow the lesson's checklist and the assignment posted in Moodle. Include source,
-README, results, and your progress/AI-use note. Exclude .venv, passwords, keys,
-private connection files, and unrelated data. Moodle controls deadlines and grades.
+In the King's Linux terminal:
+
+```bash
+cd ~/cs256-project
+export DATABASE_DSN="dbname=$(whoami)"
+PYTHONDONTWRITEBYTECODE=1 .venv-kings/bin/python -m flask --app app:app --no-debug run --host 127.0.0.1 --port 5108 --no-debugger --no-reload
+```
+
+Keep this terminal open while using the application.
+
+The Flask application runs on the King's server, not on the Windows computer.
+
+### Create the SSH Tunnel
+
+Open a second terminal on Windows, outside the King's SSH session.
+
+Run:
+
+```powershell
+ssh -N -o ExitOnForwardFailure=yes -L 127.0.0.1:55100:127.0.0.1:5108 antonioscialpi@cs256.kings.edu
+```
+
+Keep the SSH tunnel open.
+
+In the Windows web browser, visit:
+
+http://127.0.0.1:55100
+
+The browser connects through the SSH tunnel to Flask running on the King's server.
+
+### Verify the Database Connection
+
+In the King's Linux project folder:
+
+```bash
+cd ~/cs256-project
+export DATABASE_DSN="dbname=$(whoami)"
+PYTHONDONTWRITEBYTECODE=1 .venv-kings/bin/python check_connection.py
+```
+
+### Test the PostgreSQL Query
+
+Run:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv-kings/bin/python check_read.py
+```
+
+The tested query returns two sample movie records:
+
+1. Sample Film: Lantern Harbor — Mystery
+2. Sample Film: Orbit Picnic — Comedy
+
+The results match the records displayed on the Flask webpage.
+
+### Security and Version Control
+
+Do not commit Python virtual environments, `.env` files, passwords, database credentials, private keys, or local secret configuration files.
+
+The GitHub repository does not automatically synchronize with the King's server. Changes must be transferred or deployed separately.
