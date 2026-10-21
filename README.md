@@ -69,7 +69,7 @@ King's College server structure:
 - Server template: `~/cs256-project/templates/index.html`
 - Python environment: `~/cs256-project/.venv-kings`
 
-The GitHub and server folder structures are slightly different. The GitHub application uses `../templates`, while the server application uses `templates`.
+The GitHub and server folder structures are slightly different. The application now detects the templates directory in either layout; no source change is required when uploading.
 
 ### PostgreSQL Configuration
 
@@ -160,3 +160,20 @@ The results match the records displayed on the Flask webpage.
 Do not commit Python virtual environments, `.env` files, passwords, database credentials, private keys, or local secret configuration files.
 
 The GitHub repository does not automatically synchronize with the King's server. Changes must be transferred or deployed separately.
+
+## Lesson 6: Form Validation and Database Write
+
+See [M06_SETUP.md](M06_SETUP.md) for exact upload/startup commands and the browser
+and PostgreSQL checks required for the submission.
+
+- `/movies/new` displays the form on GET and validates submitted fields on POST.
+- `backendconnection/validation.py` checks required fields, integer IDs, release
+  years (1888–2100), and synopsis length (20–1,000 characters).
+- `backendconnection/repository_postgres.py` inserts bound parameter values,
+  commits the row, and retrieves saved movies by their primary keys.
+- Success redirects with HTTP 303 to `/movies/<movie_id>`. Refreshing this GET
+  page does not repeat the INSERT. Duplicate IDs return a field error.
+- The homepage now includes all movie titles and links to creation and details.
+
+Movie IDs are entered manually because the existing database has no default
+for `movie_id`. No database schema changes are required.

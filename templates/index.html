@@ -15,11 +15,12 @@
         <h1>Movie Vault</h1>
         <h2>PostgreSQL Practice Records</h2>
         <p>These movie records are retrieved from my PostgreSQL database using Flask and Python.</p>
+        <p><a href="{{ url_for('add_movie') }}">Add a movie</a></p>
 
         <section class="cards" aria-label="Records">
             {% for row in rows %}
             <article class="card">
-                <h2>{{ row.title }}</h2>
+                <h2><a href="{{ url_for('movie_detail', movie_id=row.movie_id) }}">{{ row.title }}</a></h2>
                 <p>{{ row.category }}</p>
             </article>
             {% else %}

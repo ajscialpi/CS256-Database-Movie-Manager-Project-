@@ -51,3 +51,49 @@ a {
   outline: 3px solid var(--brand);
   outline-offset: 3px;
 }
+
+.field {
+  max-width: 40rem;
+  margin-block: 1rem;
+}
+
+label, dt {
+  display: block;
+  font-weight: 700;
+}
+
+input, textarea, button {
+  font: inherit;
+  padding: .6rem;
+  border: 1px solid #777;
+  border-radius: .3rem;
+}
+
+input, textarea {
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  color: white;
+  background: var(--brand);
+  cursor: pointer;
+}
+
+.field-error {
+  color: #9b1515;
+  margin-block: .25rem;
+}
+
+[aria-invalid="true"] {
+  border: 2px solid #9b1515;
+}
+
+dd {
+  margin: 0 0 1rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ movie.title }} | MovieVault</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='brand.css') }}">
+</head>
+<body>
+    <main>
+        <h1>Saved movie record</h1>
+        <p>This record was retrieved from PostgreSQL using movie ID {{ movie.movie_id }}.</p>
+
+        <dl>
+            {% for field, value in movie.items() %}
+            <dt>{{ field.replace('_', ' ') | title }}</dt>
+            <dd>{{ value }}</dd>
+            {% endfor %}
+        </dl>
+
+        <a href="{{ url_for('add_movie') }}">Add another movie</a>
+        <a href="{{ url_for('home') }}">Back to movies</a>
+    </main>
+</body>
+</html>

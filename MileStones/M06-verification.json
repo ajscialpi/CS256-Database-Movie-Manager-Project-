@@ -1,0 +1,69 @@
+{
+  "verified_at_utc": "2026-10-21T03:16:58.964628+00:00",
+  "method": "Flask test client on uploaded Kings app with real PostgreSQL; no database mocks. Repeated GETs simulate refresh, not a manual browser check.",
+  "before": {
+    "count": 3,
+    "saved_movie": {
+      "movie_id": 9001,
+      "title": "Sample Film: Midnight Library",
+      "genre": "Mystery",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional librarian discovers a hidden room containing clues to a forgotten town mystery."
+    },
+    "rejected_id_rows": 0
+  },
+  "required_fields_rejection": {
+    "http_status": 400,
+    "after": {
+      "count": 3,
+      "saved_movie": {
+        "movie_id": 9001,
+        "title": "Sample Film: Midnight Library",
+        "genre": "Mystery",
+        "release_year": 2026,
+        "director": "Jordan Example",
+        "content_rating": "PG",
+        "synopsis": "A fictional librarian discovers a hidden room containing clues to a forgotten town mystery."
+      },
+      "rejected_id_rows": 0
+    }
+  },
+  "short_synopsis_rejection": {
+    "http_status": 400,
+    "after": {
+      "count": 3,
+      "saved_movie": {
+        "movie_id": 9001,
+        "title": "Sample Film: Midnight Library",
+        "genre": "Mystery",
+        "release_year": 2026,
+        "director": "Jordan Example",
+        "content_rating": "PG",
+        "synopsis": "A fictional librarian discovers a hidden room containing clues to a forgotten town mystery."
+      },
+      "rejected_id_rows": 0
+    }
+  },
+  "repeated_detail_get": {
+    "http_statuses": [
+      200,
+      200
+    ],
+    "after": {
+      "count": 3,
+      "saved_movie": {
+        "movie_id": 9001,
+        "title": "Sample Film: Midnight Library",
+        "genre": "Mystery",
+        "release_year": 2026,
+        "director": "Jordan Example",
+        "content_rating": "PG",
+        "synopsis": "A fictional librarian discovers a hidden room containing clues to a forgotten town mystery."
+      },
+      "rejected_id_rows": 0
+    }
+  },
+  "result": "PASS"
+}

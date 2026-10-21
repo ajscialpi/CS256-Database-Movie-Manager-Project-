@@ -1,15 +1,27 @@
-"""MovieVault Flask application - Lesson 5."""
+"""MovieVault PostgreSQL reads and validated movie creation."""
 
 import os
-import getpass
+from pathlib import Path
 import psycopg
 from psycopg.rows import dict_row
-from flask import Flask, render_template
+from flask import (
+    Flask, abort, redirect, render_template, request, url_for,
+)
+from psycopg.errors import UniqueViolation
+
+from repository_postgres import create_movie, get_movie
+from validation import FIELDS, validate_movie
+
+# Support both backendconnection/app.py locally and app.py on King's.
+APP_DIR = Path(__file__).resolve().parent
+TEMPLATE_DIR = APP_DIR / 'templates'
+if not TEMPLATE_DIR.is_dir():
+    TEMPLATE_DIR = APP_DIR.parent / 'templates'
 
 app = Flask(
     __name__,
-    template_folder='../templates',
-    static_folder='../templates',
+    template_folder=str(TEMPLATE_DIR),
+    static_folder=str(TEMPLATE_DIR),
     static_url_path='/templates',
 )
 
@@ -31,7 +43,7 @@ def read_m05_rows():
             FROM cs256_m05_movievault.movies
             WHERE title ILIKE %s
             ORDER BY movie_id
-        """, ('%Sample%',)).fetchall()
+        """, ('%',)).fetchall()
 
 
 # Home page
@@ -39,6 +51,42 @@ def read_m05_rows():
 def home():
     display_rows = read_m05_rows()
     return render_template('index.html', rows=display_rows)
+
+
+@app.route('/movies/new', methods=['GET', 'POST'])
+def add_movie():
+    values = {field: '' for field in FIELDS}
+    errors = {}
+
+    if request.method == 'POST':
+        values, errors = validate_movie(request.form)
+        if not errors:
+            try:
+                movie_id = create_movie(values)
+            except UniqueViolation:
+                errors['movie_id'] = (
+                    'That movie ID already exists. Choose another ID.'
+                )
+            else:
+                # Post/Redirect/Get: refreshing the detail page only reads.
+                return redirect(
+                    url_for('movie_detail', movie_id=movie_id), code=303
+                )
+
+    return render_template(
+        'add_movie.html', fields=FIELDS, values=values, errors=errors
+    ), (400 if errors else 200)
+
+
+@app.get('/movies/<int:movie_id>')
+def movie_detail(movie_id):
+    # PostgreSQL integer keys cannot exceed this range.
+    if movie_id > 2147483647:
+        abort(404)
+    movie = get_movie(movie_id)
+    if movie is None:
+        abort(404)
+    return render_template('movie_detail.html', movie=movie)
 
 
 if __name__ == '__main__':

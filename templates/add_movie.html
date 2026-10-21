@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Movie | MovieVault</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='brand.css') }}">
+</head>
+<body>
+    <main>
+        <h1>Add a Movie</h1>
+        <p>All fields are required. Choose an unused movie ID.</p>
+        <p>Release year: 1888–2100. Synopsis: 20–1,000 characters.</p>
+        {% if errors %}
+        <p class="field-error" role="alert">Movie not saved. Correct the fields below.</p>
+        {% endif %}
+
+        <form method="post"
+              action="{{ url_for('add_movie') }}"
+              novalidate>
+
+            {% for field in fields %}
+            <div class="field">
+                <label for="{{ field }}">
+                    {{ field.replace('_', ' ') | title }}
+                </label>
+
+                {% if field == 'synopsis' %}
+                <textarea
+                    id="{{ field }}"
+                    name="{{ field }}"
+                    required
+                    minlength="20"
+                    maxlength="1000"
+                    rows="5"
+                    aria-invalid="{{ 'true' if field in errors else 'false' }}"
+                    aria-describedby="{{ field }}-error"
+                >{{ values[field] }}</textarea>
+                {% else %}
+                <input
+                    id="{{ field }}"
+                    name="{{ field }}"
+                    type="text"
+                    {% if field in ('movie_id', 'release_year') %}inputmode="numeric"{% endif %}
+                    value="{{ values[field] }}"
+                    required
+                    aria-invalid="{{ 'true' if field in errors else 'false' }}"
+                    aria-describedby="{{ field }}-error"
+                >
+                {% endif %}
+
+                <p id="{{ field }}-error" class="field-error">
+                    {{ errors.get(field, '') }}
+                </p>
+            </div>
+            {% endfor %}
+
+            <button type="submit">Save movie</button>
+        </form>
+
+        <a href="{{ url_for('home') }}">Back to movies</a>
+    </main>
+</body>
+</html>
