@@ -1,7 +1,7 @@
 :root {
-  --ink: #1a1a1a;
-  --paper: #f7f7f7;
-  --brand: #b31217;
+  --ink: #f5f5f5;
+  --paper: #0a0b0d;
+  --brand: #e11d2e;
 }
 
 * {
@@ -27,11 +27,15 @@ h1 {
 }
 
 h1, h2 {
-  color: var(--brand);
+  color: var(--ink);
 }
 
 a {
-  color: var(--brand);
+  color: var(--ink);
+}
+
+a:hover {
+  color: #ff3346;
 }
 
 .cards {
@@ -65,12 +69,16 @@ label, dt {
 input, textarea, button {
   font: inherit;
   padding: .6rem;
+  background: var(--paper);
   border: 1px solid #777;
   border-radius: .3rem;
 }
 
 input, textarea {
   width: 100%;
+  color: var(--ink);
+  background: #1d2026;
+  border-color: #30343c;
 }
 
 textarea {
