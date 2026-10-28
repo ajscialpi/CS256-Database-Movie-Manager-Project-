@@ -45,10 +45,6 @@ def read_m05_rows():
             ORDER BY movie_id
         """, ('%',)).fetchall()
 
-
-# Home page
-@app.get('/')
-
 # Home page with movie search
 @app.get('/')
 def home():
