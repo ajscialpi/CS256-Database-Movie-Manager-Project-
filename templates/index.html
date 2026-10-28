@@ -13,6 +13,37 @@
 
     <main>
         <h1>Movie Vault</h1>
+        
+        <!-- Movie Search Form -->
+        <section>
+            <h2>Search Movies</h2>
+
+            <form method="get"
+                action="{{ url_for('home') }}">
+
+                <label for="movie-search">
+                    Search by Movie Title:
+                </label>
+
+                <input
+                    type="search"
+                    id="movie-search"
+                    name="q"
+                    placeholder="Enter a movie title..."
+                    value="{{ query | default('') }}"
+                >
+
+                <button type="submit">Search</button>
+
+                <a href="{{ url_for('home') }}">Clear</a>
+            </form>
+
+            {% if query %}
+                <p>Search results for: "{{ query }}"</p>
+            {% else %}
+                <p>Showing all movies (maximum 25).</p>
+            {% endif %}
+        </section>
         <h2>PostgreSQL Practice Records</h2>
         <p>These movie records are retrieved from my PostgreSQL database using Flask and Python.</p>
         <p><a href="{{ url_for('add_movie') }}">Add a movie</a></p>

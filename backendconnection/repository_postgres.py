@@ -42,3 +42,29 @@ def get_movie(movie_id):
             """,
             (movie_id,),
         ).fetchone()
+
+    
+def search_movies(query):
+    # Remove extra spaces from the search input
+    query = query.strip()
+
+    # Allow partial title matches
+    pattern = f"%{query}%"
+
+    with psycopg.connect(
+        os.environ["DATABASE_DSN"],
+        row_factory=dict_row,
+    ) as conn:
+        return conn.execute(
+            """
+            SELECT movie_id, title,
+                   genre AS category,
+                   release_year, director,
+                   content_rating, synopsis
+            FROM cs256_m05_movievault.movies
+            WHERE title ILIKE %s
+            ORDER BY title ASC, movie_id ASC
+            LIMIT 25
+            """,
+            (pattern,),
+        ).fetchall()

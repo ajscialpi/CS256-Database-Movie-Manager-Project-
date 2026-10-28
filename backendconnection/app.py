@@ -9,7 +9,7 @@ from flask import (
 )
 from psycopg.errors import UniqueViolation
 
-from repository_postgres import create_movie, get_movie
+from repository_postgres import create_movie, get_movie, search_movies
 from validation import FIELDS, validate_movie
 
 # Support both backendconnection/app.py locally and app.py on King's.
@@ -48,9 +48,23 @@ def read_m05_rows():
 
 # Home page
 @app.get('/')
+
+# Home page with movie search
+@app.get('/')
 def home():
-    display_rows = read_m05_rows()
-    return render_template('index.html', rows=display_rows)
+    # Get the search text from the URL
+    query = request.args.get('q', '').strip()
+
+    # Search PostgreSQL for matching movies
+    display_rows = search_movies(query)
+
+    # Display the results on the homepage
+    return render_template(
+        'index.html',
+        rows=display_rows,
+        query=query
+    )
+
 
 
 @app.route('/movies/new', methods=['GET', 'POST'])
