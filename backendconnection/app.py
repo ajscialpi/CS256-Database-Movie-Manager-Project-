@@ -3,7 +3,6 @@
 import os
 from pathlib import Path
 import psycopg
-from psycopg.rows import dict_row
 from flask import (
     Flask, abort, redirect, render_template, request, url_for,
 )
@@ -33,21 +32,6 @@ app.config['SECRET_KEY'] = os.getenv(
 )
 
 
-# Read movie records from PostgreSQL
-def read_m05_rows():
-    with psycopg.connect(
-        os.environ['DATABASE_DSN'],
-        row_factory=dict_row
-    ) as conn:
-        return conn.execute("""
-            SELECT movie_id, title, genre AS category,
-                   release_year, director,
-                   content_rating, synopsis
-            FROM cs256_m05_movievault.movies
-            WHERE title ILIKE %s
-            ORDER BY movie_id
-        """, ('%',)).fetchall()
-
 # Home page with movie search
 @app.get('/')
 def home():
@@ -63,7 +47,6 @@ def home():
         rows=display_rows,
         query=query
     )
-
 
 
 @app.route('/movies/new', methods=['GET', 'POST'])
