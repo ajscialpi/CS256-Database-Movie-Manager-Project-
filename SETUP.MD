@@ -4,8 +4,9 @@
 
 MovieVault currently lists movies, accepts a validated new-movie form, saves it
 to PostgreSQL, and displays the saved record. It uses Python, Flask, Jinja HTML
-templates, CSS, and Psycopg. Editing/deleting movies and working community reviews
-are not implemented in the current Flask routes.
+templates, CSS, and Psycopg. M08 adds editing and confirmed deletion with stale-form
+protection; see [M08_SETUP.md](M08_SETUP.md) for those checks. Working community
+reviews are not implemented in the current Flask routes.
 
 | Location | Purpose |
 | --- | --- |

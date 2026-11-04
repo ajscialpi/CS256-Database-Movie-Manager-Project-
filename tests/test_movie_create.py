@@ -88,7 +88,7 @@ class MovieFlowTests(unittest.TestCase):
         self.assertEqual(self.client.get('/movies/2147483648').status_code, 404)
         get.assert_called_once_with(9002)
 
-    @patch.object(web, 'read_m05_rows')
+    @patch.object(web, 'search_movies')
     def test_home_links_to_create_and_saved_movie(self, read):
         read.return_value = [{'movie_id': 9001, 'title': 'New Movie', 'category': 'Mystery'}]
         response = self.client.get('/')

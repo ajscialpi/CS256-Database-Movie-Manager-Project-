@@ -92,12 +92,20 @@ button {
 }
 
 .field-error {
-  color: #9b1515;
+  color: #ff8b96;
   margin-block: .25rem;
 }
 
 [aria-invalid="true"] {
-  border: 2px solid #9b1515;
+  border: 2px solid #ff8b96;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-block: 1rem;
 }
 
 dd {

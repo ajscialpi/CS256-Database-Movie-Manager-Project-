@@ -177,3 +177,11 @@ and PostgreSQL checks required for the submission.
 
 Movie IDs are entered manually because the existing database has no default
 for `movie_id`. No database schema changes are required.
+
+## Lesson 8: Edit and Delete
+
+Movie details now link to prefilled edit and delete-confirmation pages. Both
+workflows use parameterized SQL, keep the movie ID fixed, and reject stale forms
+with HTTP 409. Cancel only returns to the detail page; related reviews can block
+deletion. See [M08](MileStones/M08.md) for verified results and screenshots, and
+[M08_SETUP.md](M08_SETUP.md) for startup and test commands.

@@ -1,0 +1,153 @@
+{
+  "verified_at_utc": "2026-11-04T04:00:38.112794+00:00",
+  "method": "Flask test client on King's with real PostgreSQL; no database mocks. Cancel follows the form's link; two form GETs simulate browser tabs.",
+  "movie_id": 1582246069,
+  "existing_movie_count_before": 5,
+  "create": {
+    "http_status": 303,
+    "saved_movie": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8",
+      "genre": "Mystery",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie created only to verify the M08 CRUD workflow."
+    }
+  },
+  "update": {
+    "http_status": 303,
+    "before": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8",
+      "genre": "Mystery",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie created only to verify the M08 CRUD workflow."
+    },
+    "after": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8 - O'Brien Edit",
+      "genre": "Drama",
+      "release_year": 2025,
+      "director": "Casey Example",
+      "content_rating": "PG-13",
+      "synopsis": "The updated fictional movie follows a director solving a theater mystery."
+    }
+  },
+  "stale_edit": {
+    "http_status": 409,
+    "after": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8 - O'Brien Edit",
+      "genre": "Drama",
+      "release_year": 2025,
+      "director": "Casey Example",
+      "content_rating": "PG-13",
+      "synopsis": "The updated fictional movie follows a director solving a theater mystery."
+    }
+  },
+  "stale_delete": {
+    "http_status": 409,
+    "after": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8 - O'Brien Edit",
+      "genre": "Drama",
+      "release_year": 2025,
+      "director": "Casey Example",
+      "content_rating": "PG-13",
+      "synopsis": "The updated fictional movie follows a director solving a theater mystery."
+    }
+  },
+  "invalid_edit": {
+    "http_status": 400,
+    "unchanged": true
+  },
+  "missing_versions": {
+    "edit_status": 409,
+    "delete_status": 409,
+    "unchanged": true
+  },
+  "cancel": {
+    "confirmation_status": 200,
+    "cancel_get_status": 200,
+    "before": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8 - O'Brien Edit",
+      "genre": "Drama",
+      "release_year": 2025,
+      "director": "Casey Example",
+      "content_rating": "PG-13",
+      "synopsis": "The updated fictional movie follows a director solving a theater mystery."
+    },
+    "after": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8 - O'Brien Edit",
+      "genre": "Drama",
+      "release_year": 2025,
+      "director": "Casey Example",
+      "content_rating": "PG-13",
+      "synopsis": "The updated fictional movie follows a director solving a theater mystery."
+    }
+  },
+  "unconfirmed_delete": {
+    "http_status": 400,
+    "unchanged": true
+  },
+  "foreign_key_restriction": {
+    "http_status": 409,
+    "movie_and_review_preserved": true
+  },
+  "search_and_detail": {
+    "searches": [
+      {
+        "query": "37a6b466b6d8",
+        "http_status": 200
+      },
+      {
+        "query": "NO-SUCH-MOVIE-37a6b466b6d8",
+        "http_status": 200
+      },
+      {
+        "query": "",
+        "http_status": 200
+      },
+      {
+        "query": "O'Brien",
+        "http_status": 200
+      }
+    ],
+    "repeated_detail_statuses": [
+      200,
+      200
+    ],
+    "unchanged": true
+  },
+  "delete": {
+    "http_status": 303,
+    "before": {
+      "movie_id": 1582246069,
+      "title": "M08 Disposable 37a6b466b6d8 - O'Brien Edit",
+      "genre": "Drama",
+      "release_year": 2025,
+      "director": "Casey Example",
+      "content_rating": "PG-13",
+      "synopsis": "The updated fictional movie follows a director solving a theater mystery."
+    },
+    "after": null,
+    "rows_after": 0
+  },
+  "nonexistent_movie": {
+    "GET edit": 404,
+    "POST edit": 404,
+    "GET delete": 404,
+    "POST delete": 404
+  },
+  "cleanup": {
+    "existing_movie_count_after": 5,
+    "all_existing_movies_and_reviews_unchanged": true,
+    "disposable_movie_and_review_removed": true
+  },
+  "result": "PASS"
+}

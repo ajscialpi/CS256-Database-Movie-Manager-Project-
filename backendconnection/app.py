@@ -1,4 +1,4 @@
-"""MovieVault PostgreSQL reads and validated movie creation."""
+"""MovieVault search and validated PostgreSQL CRUD workflows."""
 
 import os
 from pathlib import Path
@@ -7,9 +7,12 @@ from psycopg.rows import dict_row
 from flask import (
     Flask, abort, redirect, render_template, request, url_for,
 )
-from psycopg.errors import UniqueViolation
+from psycopg.errors import ForeignKeyViolation, UniqueViolation
 
-from repository_postgres import create_movie, get_movie, search_movies
+from repository_postgres import (
+    MovieNotFound, StaleMovie, create_movie, delete_movie, get_movie,
+    movie_version, search_movies, update_movie,
+)
 from validation import FIELDS, validate_movie
 
 # Support both backendconnection/app.py locally and app.py on King's.
@@ -90,13 +93,85 @@ def add_movie():
 
 @app.get('/movies/<int:movie_id>')
 def movie_detail(movie_id):
+    return render_template('movie_detail.html', movie=_movie_or_404(movie_id))
+
+
+def _movie_or_404(movie_id):
     # PostgreSQL integer keys cannot exceed this range.
     if movie_id > 2147483647:
         abort(404)
     movie = get_movie(movie_id)
     if movie is None:
         abort(404)
-    return render_template('movie_detail.html', movie=movie)
+    return movie
+
+
+@app.route('/movies/<int:movie_id>/edit', methods=['GET', 'POST'])
+def edit_movie(movie_id):
+    movie = _movie_or_404(movie_id)
+    values = movie.copy()
+    errors = {}
+    message = ''
+    status = 200
+    version = movie_version(movie)
+
+    if request.method == 'POST':
+        # The URL chooses the movie. Ignore any submitted replacement ID.
+        values, errors = validate_movie({**request.form, 'movie_id': str(movie_id)})
+        version = request.form.get('version', '')
+        if errors:
+            status = 400
+        else:
+            try:
+                update_movie(movie_id, values, version)
+            except MovieNotFound:
+                abort(404)
+            except StaleMovie:
+                status = 409
+                message = ('This movie changed after you opened the form. '
+                           'Your changes were not saved. Open the latest movie before editing again.')
+            except (psycopg.IntegrityError, psycopg.DataError):
+                status = 400
+                message = 'These values could not be saved. Check the movie details.'
+            else:
+                return redirect(url_for('movie_detail', movie_id=movie_id), code=303)
+
+    return render_template(
+        'edit_movie.html', movie=movie, fields=FIELDS[1:], values=values,
+        errors=errors, version=version, message=message,
+    ), status
+
+
+@app.route('/movies/<int:movie_id>/delete', methods=['GET', 'POST'])
+def confirm_delete_movie(movie_id):
+    movie = _movie_or_404(movie_id)
+    version = movie_version(movie)
+    message = ''
+    status = 200
+
+    if request.method == 'POST':
+        version = request.form.get('version', '')
+        if request.form.get('confirm') != 'yes':
+            message = 'Please confirm deletion using the Delete movie button.'
+            status = 400
+        else:
+            try:
+                delete_movie(movie_id, version)
+            except MovieNotFound:
+                abort(404)
+            except StaleMovie:
+                status = 409
+                message = ('This movie changed after you opened the confirmation. '
+                           'Nothing was deleted. Open the latest movie before trying again.')
+            except ForeignKeyViolation:
+                status = 409
+                message = 'This movie has related records, such as reviews, and cannot be deleted.'
+            else:
+                return redirect(url_for('home'), code=303)
+
+    return render_template(
+        'delete_movie.html', movie=movie, version=version, message=message,
+    ), status
 
 
 if __name__ == '__main__':

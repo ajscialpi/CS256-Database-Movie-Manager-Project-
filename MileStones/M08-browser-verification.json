@@ -1,0 +1,82 @@
+{
+  "verified_at_utc": "2026-11-04T04:02:11.245084+00:00",
+  "method": "Automated Chrome browser through SSH to the isolated King's M08 app; separate PostgreSQL SELECTs through SSH verify stored values.",
+  "movie_id": 1989518739,
+  "update": {
+    "http_status": 303,
+    "before": {
+      "movie_id": 1989518739,
+      "title": "M08 Browser Test 1989518739",
+      "genre": "Mystery",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie used only for the M08 browser verification."
+    },
+    "after": {
+      "movie_id": 1989518739,
+      "title": "M08 Browser Test 1989518739 - Updated",
+      "genre": "Drama",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie used only for the M08 browser verification."
+    }
+  },
+  "stale_edit": {
+    "http_status": 409,
+    "after": {
+      "movie_id": 1989518739,
+      "title": "M08 Browser Test 1989518739 - Updated",
+      "genre": "Drama",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie used only for the M08 browser verification."
+    }
+  },
+  "stale_delete": {
+    "http_status": 409,
+    "unchanged": true
+  },
+  "cancel": {
+    "before": {
+      "movie_id": 1989518739,
+      "title": "M08 Browser Test 1989518739 - Updated",
+      "genre": "Drama",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie used only for the M08 browser verification."
+    },
+    "after": {
+      "movie_id": 1989518739,
+      "title": "M08 Browser Test 1989518739 - Updated",
+      "genre": "Drama",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie used only for the M08 browser verification."
+    },
+    "returned_to_detail": true
+  },
+  "narrow_edit": {
+    "viewport_width": 375,
+    "no_horizontal_overflow": true
+  },
+  "delete": {
+    "http_status": 303,
+    "before": {
+      "movie_id": 1989518739,
+      "title": "M08 Browser Test 1989518739 - Updated",
+      "genre": "Drama",
+      "release_year": 2026,
+      "director": "Jordan Example",
+      "content_rating": "PG",
+      "synopsis": "A fictional movie used only for the M08 browser verification."
+    },
+    "after": null
+  },
+  "all_existing_movies_and_reviews_unchanged": true,
+  "result": "PASS"
+}
