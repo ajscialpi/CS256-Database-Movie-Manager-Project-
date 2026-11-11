@@ -1,11 +1,25 @@
 import hashlib
 import json
 import os
+from pathlib import Path
 
 import psycopg
 from psycopg.rows import dict_row
 
 from validation import FIELDS
+
+
+def movie_review_report_sql():
+    """Use the same SQL in the repository and the flat King's upload layout."""
+    directory = Path(__file__).resolve().parent
+    if directory.name == 'backendconnection':
+        directory = directory.parent
+    return (directory / 'sql' / 'm09_movie_review_report.sql').read_text(encoding='utf-8')
+
+
+def get_movie_review_report():
+    with psycopg.connect(os.environ['DATABASE_DSN'], row_factory=dict_row) as conn:
+        return conn.execute(movie_review_report_sql()).fetchall()
 
 
 class MovieNotFound(Exception):

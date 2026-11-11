@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movie review report | MovieVault</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='brand.css') }}">
+</head>
+<body>
+    <header><p>Movie Vault</p></header>
+    <main>
+        <p><a href="{{ url_for('home') }}">Back to movies</a></p>
+        <h1>Movie review report</h1>
+        <p>How many reviews does each movie have, and what is its average review rating?</p>
+        {% if error %}
+        <p role="alert">{{ error }}</p>
+        {% elif rows %}
+        <p id="report-help">All movies, ordered by most reviews, then title and movie ID.
+            Ratings are out of 10. N/A means the movie has no reviews.
+            On a small screen, scroll the table sideways.</p>
+        <div class="report-table-scroll" role="region" aria-label="Movie review results"
+             aria-describedby="report-help" tabindex="0">
+            <table class="report-table">
+                <caption>Review count and average rating per movie</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Movie</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Release Year</th>
+                        <th scope="col">Total Reviews</th>
+                        <th scope="col">Average Rating (out of 10)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <th scope="row"><a href="{{ url_for('movie_detail', movie_id=row.movie_id) }}">{{ row.title }}</a>
+                            <small class="report-movie-id">Movie ID: {{ row.movie_id }}</small></th>
+                        <td>{{ row.genre }}</td>
+                        <td class="report-number">{{ row.release_year }}</td>
+                        <td class="report-number">{{ row.total_reviews }}</td>
+                        <td class="report-number">{{ '%.2f' | format(row.average_rating) if row.average_rating is not none else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p>The average only reflects reviews saved in MovieVault. A movie with very few
+            reviews may not represent everyone's opinion.</p>
+        {% else %}
+        <p>No movies are available yet. <a href="{{ url_for('add_movie') }}">Add a movie</a> to get started.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

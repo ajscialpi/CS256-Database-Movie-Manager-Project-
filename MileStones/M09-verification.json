@@ -1,0 +1,25 @@
+{
+  "verified_at_utc": "2026-11-11T03:37:38.588127+00:00",
+  "method": "Read-only PostgreSQL queries and Flask test client; no database mocks.",
+  "synthetic_sql_checks": "PASS: repeated ratings, same-title movies, rounding, zero rating, no reviews, tie order",
+  "one_row_per_movie": true,
+  "independent_check": {
+    "movie_id": 1,
+    "title": "Sample Film: Lantern Harbor",
+    "reviews": [
+      {
+        "review_id": 1,
+        "rating": "8.0"
+      }
+    ],
+    "rating_sum": "8.0",
+    "count": 1,
+    "calculated_average": "8.00",
+    "report_count": 1,
+    "report_average": "8.00",
+    "matches": true
+  },
+  "report_home_create_form_and_existing_detail_gets": "PASS (detail only if a movie exists)",
+  "selected_movie_html_matches_sql": true,
+  "result": "PASS"
+}

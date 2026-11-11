@@ -47,6 +47,7 @@
         <h2>PostgreSQL Practice Records</h2>
         <p>These movie records are retrieved from my PostgreSQL database using Flask and Python.</p>
         <p><a href="{{ url_for('add_movie') }}">Add a movie</a></p>
+        <p><a href="{{ url_for('movie_review_report') }}">Movie review report</a></p>
 
         <section class="cards" aria-label="Records">
             {% for row in rows %}

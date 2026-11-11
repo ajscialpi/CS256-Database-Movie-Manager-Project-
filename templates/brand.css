@@ -113,3 +113,44 @@ dd {
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
+
+.report-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--brand);
+  border-radius: .6rem;
+}
+
+.report-table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+}
+
+.report-table caption {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 700;
+}
+
+.report-table th, .report-table td {
+  padding: .75rem 1rem;
+  border-top: 1px solid #30343c;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.report-table thead {
+  background: #1d2026;
+}
+
+.report-table .report-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.report-movie-id {
+  display: block;
+  font-weight: 400;
+}

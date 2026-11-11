@@ -10,7 +10,7 @@ from psycopg.errors import ForeignKeyViolation, UniqueViolation
 
 from repository_postgres import (
     MovieNotFound, StaleMovie, create_movie, delete_movie, get_movie,
-    movie_version, search_movies, update_movie,
+    get_movie_review_report, movie_version, search_movies, update_movie,
 )
 from validation import FIELDS, validate_movie
 
@@ -47,6 +47,20 @@ def home():
         rows=display_rows,
         query=query
     )
+
+
+@app.get('/reports/movie-reviews')
+def movie_review_report():
+    try:
+        rows = get_movie_review_report()
+    except (psycopg.Error, KeyError, OSError):
+        # Do not expose connection settings or database exception messages.
+        app.logger.warning('Movie review report unavailable.')
+        return render_template(
+            'movie_review_report.html', rows=[],
+            error='The movie review report is temporarily unavailable. Please try again later.',
+        ), 503
+    return render_template('movie_review_report.html', rows=rows, error='')
 
 
 @app.route('/movies/new', methods=['GET', 'POST'])
