@@ -49,16 +49,50 @@
         <p><a href="{{ url_for('add_movie') }}">Add a movie</a></p>
         <p><a href="{{ url_for('movie_review_report') }}">Movie review report</a></p>
 
+        {% for category, text in get_flashed_messages(with_categories=true) %}
+        <p role="status">{{ text }}</p>
+        {% endfor %}
+        {% if message %}
+        <p class="field-error" role="alert">{{ message }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('bulk_movie_genres') }}">
+        <input type="hidden" name="q" value="{{ query }}">
+        {% if rows %}
+        <h2>Update Movie Genres</h2>
+        <p>Select movies below and choose their new genre. All selected movies must update successfully for the changes to be saved.</p>
+        <div class="field">
+            <label for="bulk-genre">New genre</label>
+            <select id="bulk-genre" name="genre" required>
+                <option value="">Choose a genre</option>
+                {% for genre in genres %}
+                <option value="{{ genre }}">{{ genre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="actions">
+            <button type="submit">Update Selected Movies</button>
+        </div>
+        {% endif %}
         <section class="cards" aria-label="Records">
             {% for row in rows %}
             <article class="card">
+                <label class="movie-selection" for="select-{{ row.movie_id }}">
+                    <input type="checkbox" id="select-{{ row.movie_id }}" name="movie_ids" value="{{ row.movie_id }}">
+                    Select {{ row.title }}
+                </label>
+                <input type="hidden" name="version_{{ row.movie_id }}" value="{{ row.version }}">
                 <h2><a href="{{ url_for('movie_detail', movie_id=row.movie_id) }}">{{ row.title }}</a></h2>
+                <p>Movie ID: {{ row.movie_id }}</p>
                 <p>{{ row.category }}</p>
             </article>
             {% else %}
+            {% if not message %}
             <p>No matching records yet.</p>
+            {% endif %}
             {% endfor %}
         </section>
+        </form>
     </main>
 </body>
 </html>

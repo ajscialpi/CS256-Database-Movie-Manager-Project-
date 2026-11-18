@@ -6,7 +6,7 @@ from pathlib import Path
 import psycopg
 from psycopg.rows import dict_row
 
-from validation import FIELDS
+from validation import FIELDS, validate_movie_genres
 
 
 def movie_review_report_sql():
@@ -81,6 +81,30 @@ def update_movie(movie_id, values, version):
         # The connection context commits on success and rolls back on errors.
 
 
+def update_movie_genres(movie_ids, genre, versions):
+    """Save every selected genre together, or roll back the entire attempt."""
+    movie_ids, genre = validate_movie_genres(movie_ids, genre, versions)
+    with psycopg.connect(os.environ['DATABASE_DSN'], row_factory=dict_row) as conn:
+        # Start the explicit transaction before any SQL runs on this connection.
+        with conn.transaction():
+            for movie_id in movie_ids:
+                # Check and update in ascending ID order. A later stale record
+                # must roll back even the UPDATEs that already ran successfully.
+                _lock_current_movie(conn, movie_id, versions[str(movie_id)])
+                cursor = conn.execute(
+                    """
+                    UPDATE cs256_m05_movievault.movies
+                    SET genre = %s
+                    WHERE movie_id = %s
+                    RETURNING movie_id
+                    """,
+                    (genre, movie_id),
+                )
+                _require_one_row(cursor, movie_id)
+            # Normal exit commits; let every failure escape to trigger rollback.
+    return len(movie_ids)
+
+
 def delete_movie(movie_id, version):
     with psycopg.connect(os.environ['DATABASE_DSN'], row_factory=dict_row) as conn:
         _lock_current_movie(conn, movie_id, version)
@@ -146,7 +170,7 @@ def search_movies(query):
         os.environ["DATABASE_DSN"],
         row_factory=dict_row,
     ) as conn:
-        return conn.execute(
+        rows = conn.execute(
             """
             SELECT movie_id, title,
                    genre AS category,
@@ -159,3 +183,8 @@ def search_movies(query):
             """,
             (pattern,),
         ).fetchall()
+    for row in rows:
+        # The cards call genre "category"; fingerprint the same stored fields
+        # as edit/delete, using this query's snapshot (no separate row reads).
+        row['version'] = movie_version({**row, 'genre': row['category']})
+    return rows

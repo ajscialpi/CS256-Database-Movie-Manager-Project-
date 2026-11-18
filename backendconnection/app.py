@@ -4,15 +4,16 @@ import os
 from pathlib import Path
 import psycopg
 from flask import (
-    Flask, abort, redirect, render_template, request, url_for,
+    Flask, abort, flash, redirect, render_template, request, url_for,
 )
 from psycopg.errors import ForeignKeyViolation, UniqueViolation
 
 from repository_postgres import (
     MovieNotFound, StaleMovie, create_movie, delete_movie, get_movie,
     get_movie_review_report, movie_version, search_movies, update_movie,
+    update_movie_genres,
 )
-from validation import FIELDS, validate_movie
+from validation import BULK_GENRES, FIELDS, validate_movie
 
 # Support both backendconnection/app.py locally and app.py on King's.
 APP_DIR = Path(__file__).resolve().parent
@@ -38,15 +39,59 @@ def home():
     # Get the search text from the URL
     query = request.args.get('q', '').strip()
 
-    # Search PostgreSQL for matching movies
-    display_rows = search_movies(query)
+    return _render_home(query)
 
-    # Display the results on the homepage
+
+def _render_home(query, message='', status=200):
+    try:
+        display_rows = search_movies(query)
+    except (psycopg.Error, KeyError):
+        display_rows = []
+        message = (message + ' The movie list is temporarily unavailable. Please try again later.').strip()
+        status = 503
     return render_template(
-        'index.html',
-        rows=display_rows,
-        query=query
-    )
+        'index.html', rows=display_rows, query=query,
+        genres=BULK_GENRES, message=message,
+    ), status
+
+
+@app.post('/movies/genres')
+def bulk_movie_genres():
+    query = request.form.get('q', '').strip()
+    versions = {
+        key.removeprefix('version_'): value
+        for key, value in request.form.items() if key.startswith('version_')
+    }
+    try:
+        count = update_movie_genres(
+            request.form.getlist('movie_ids'), request.form.get('genre', ''), versions,
+        )
+    except ValueError as error:
+        message = str(error) + ' No genre changes were saved.'
+        status = 400
+    except MovieNotFound:
+        message = ('A selected movie no longer exists. The transaction was rolled back; '
+                   'no genre changes were saved. Review the current list and select again.')
+        status = 409
+    except StaleMovie:
+        message = ('A selected movie changed after you opened the list. The transaction '
+                   'was rolled back; no genre changes were saved. Review the current list and select again.')
+        status = 409
+    except (psycopg.IntegrityError, psycopg.DataError, RuntimeError):
+        message = ('The selected movies could not all be updated. The transaction was '
+                   'rolled back; no genre changes were saved. Review the current list and select again.')
+        status = 409
+    except (psycopg.Error, KeyError):
+        # A lost connection during COMMIT can make its outcome uncertain.
+        # Do not expose database details or claim a rollback we cannot confirm.
+        message = ('The database could not confirm this update. Refresh and check the '
+                   'selected movies before trying again.')
+        status = 503
+    else:
+        flash(f'Updated the genre for all {count} selected movies.', 'success')
+        return redirect(url_for('home', q=query) if query else url_for('home'), code=303)
+    # Errors reach here only after the transaction and connection have exited.
+    return _render_home(query, message, status)
 
 
 @app.get('/reports/movie-reviews')
