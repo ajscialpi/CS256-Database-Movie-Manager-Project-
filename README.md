@@ -56,7 +56,9 @@ The Milestone 5 Flask page currently queries the movies table. It uses a paramet
 
 GitHub repository structure:
 
-- `backendconnection/app.py` — Flask application and PostgreSQL query.
+- `backendconnection/app.py` — Flask routes and response handling.
+- `backendconnection/repository_postgres.py` — PostgreSQL queries and transactions.
+- `backendconnection/validation.py` — Server-side form checks.
 - `templates/index.html` — Jinja template displaying movie records.
 - `templates/brand.css` — Website styling.
 
@@ -132,28 +134,33 @@ The browser connects through the SSH tunnel to Flask running on the King's serve
 
 ### Verify the Database Connection
 
-In the King's Linux project folder:
+In the King's Linux terminal, open PostgreSQL:
 
 ```bash
 cd ~/cs256-project
-export DATABASE_DSN="dbname=$(whoami)"
-PYTHONDONTWRITEBYTECODE=1 .venv-kings/bin/python check_connection.py
+psql -X -d antonioscialpi
+```
+
+At the PostgreSQL prompt, run:
+
+```sql
+SELECT current_database(), current_user;
 ```
 
 ### Test the PostgreSQL Query
 
-Run:
+In the same PostgreSQL session, read the current movie records:
 
-```bash
-PYTHONDONTWRITEBYTECODE=1 .venv-kings/bin/python check_read.py
+```sql
+SELECT movie_id, title, genre
+FROM cs256_m05_movievault.movies
+ORDER BY movie_id
+LIMIT 25;
 ```
 
-The tested query returns two sample movie records:
-
-1. Sample Film: Lantern Harbor — Mystery
-2. Sample Film: Orbit Picnic — Comedy
-
-The results match the records displayed on the Flask webpage.
+The results depend on the records currently saved. Enter `\q` to leave
+PostgreSQL. These direct checks replace references to `check_connection.py`
+and `check_read.py`, which are not included in this repository.
 
 ### Security and Version Control
 
@@ -185,3 +192,56 @@ workflows use parameterized SQL, keep the movie ID fixed, and reject stale forms
 with HTTP 409. Cancel only returns to the detail page; related reviews can block
 deletion. See [M08](MileStones/M08.md) for verified results and screenshots, and
 [M08_SETUP.md](M08_SETUP.md) for startup and test commands.
+
+## M11: Testing and Protections
+
+From Windows PowerShell at the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -v
+```
+
+On November 18, 2026, Codex ran this command: **52 tests passed, no failures,
+and no skips**. The tests cover create/edit/delete, search, invalid values,
+missing records, Cancel, HTML escaping, bulk updates, conflicts, and the review
+report. Database calls are mocked; this command does not test the live database.
+The real PostgreSQL rollback and retry evidence is in
+[M10.md](MileStones/M10.md). The actual behavior checklist and expected S Corp
+outcomes are in [lesson-notes.md](LessonNotes/lesson-notes.md). S Corp has a
+separate suite that has not been run for this activity.
+
+### Configuration and Access
+
+- `DATABASE_DSN` is required for database-backed requests. On King's, use the
+  Unix-socket setting shown above. A local installation needs its own reachable
+  PostgreSQL database and the existing MovieVault schema; the unit tests do not.
+- `PROJECT_SECRET_KEY` optionally overrides Flask's development session key.
+  Set a private value outside the repository for a shared deployment. The
+  built-in fallback is for local practice and is not a private production key.
+- MovieVault has no application sign-in or roles, either simulated or
+  authenticated. It also has no record-level permission checks or CSRF tokens
+  for its change forms. Anyone who can reach the app can use its movie actions.
+  The current setup binds Flask to loopback on King's and uses an SSH tunnel;
+  SSH login is separate from application authentication.
+
+Server-side validation checks acceptable values. Parameterized SQL keeps values
+separate from SQL structure. Jinja escapes displayed text. Row locking and
+version checking protect against stale updates, and transactions prevent partial
+bulk updates. These controls do not establish user identity or authorization.
+Authentication, permissions, and CSRF protection remain work for shared access.
+
+### Source Review and Repaired Problem
+
+The source, templates, stylesheet, dependencies, and setup instructions are
+included. The README's missing helper-script references were replaced with
+direct PostgreSQL checks so a reviewer does not need unprovided scripts.
+Restarting Flask and the SSH tunnel also repaired the interrupted M10 test session.
+
+Keep private settings, keys, virtual environments, and runtime data out of Git.
+`.gitignore` covers `.venv/`, `.env`, and Python cache files. The tracked-filename
+review found no virtual environment, private environment, or private-key filenames;
+review file contents and `git diff` before publishing as well.
+
+See [M11-LabReflection.md](MileStones/M11-LabReflection.md) for the short reflection
+and AI-use note. Next steps are to complete the local S Corp exercises, review
+the evidence, and commit and push the intended files before final project review.

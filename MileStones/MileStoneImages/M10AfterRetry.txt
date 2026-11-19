@@ -1,0 +1,6 @@
+ movie_id |      title       | genre |                                       synopsis                                       
+----------+------------------+-------+--------------------------------------------------------------------------------------
+    98101 | M10 Disposable A | Drama | A disposable movie used to verify the M10 transaction and rollback.
+    98102 | M10 Disposable B | Drama | A disposable movie used to verify the M10 transaction and rollback. Change in Tab B.
+(2 rows)
+
